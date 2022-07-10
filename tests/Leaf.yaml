@@ -16,8 +16,6 @@
 ##################################
 '11.01':
   name: verify_vxlan  # Verifies the interface vxlan 1 status is up/up.
-'11.02':
-  name: verify_vxlan_config_sanity  # Verifies there is no VXLAN config-sanity warnings.
 ##################################
 ############## SVI ###############
 ##################################
@@ -33,12 +31,4 @@
 '16.05':
   name: verify_bgp_evpn_count  # Verifies all EVPN BGP sessions are established (default VRF) and the actual number of BGP EVPN neighbors is the one we expect (default VRF).
   number: 2  # The expected number of BGP EVPN neighbors in the default VRF.
-##################################
-######## Multicast ###############
-##################################
-'18.01':
-  name: verify_igmp_snooping_vlans  # Verifies the IGMP snooping configuration for some VLANs.
-  configuration: enabled  # Expected IGMP configuration (enabled or disabled) for these VLANs.
-  vlans:  # List of VLANs.
-    - 12
 

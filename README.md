@@ -2,7 +2,7 @@
 
 - [ANTA demo using an ATD (Arista Test Drive) lab](#anta-demo-using-an-atd-arista-test-drive-lab)
   - [About ANTA](#about-anta)
-  - [Set up the lab](#set-up-the-lab)
+  - [Set up the ATD lab](#set-up-the-atd-lab)
     - [Start an ATD instance](#start-an-atd-instance)
     - [Load the EVPN lab on ATD](#load-the-evpn-lab-on-atd)
     - [Check the state of spine1](#check-the-state-of-spine1)
@@ -10,7 +10,6 @@
   - [Install the packages on devbox](#install-the-packages-on-devbox)
   - [Clone this repository on devbox](#clone-this-repository-on-devbox)
   - [Create the inventory files](#create-the-inventory-files)
-  - [Test devices reachability using EAPI](#test-devices-reachability-using-eapi)
   - [Test devices reachability](#test-devices-reachability)
   - [Test devices](#test-devices)
     - [Define the tests](#define-the-tests)
@@ -34,7 +33,7 @@ ANTA stands for **Arista Network Test Automation**.
 ANTA is a Python package to automate tests on Arista devices. 
 The ANTA source code and documentation are in this repository https://github.com/arista-netdevops-community/network-test-automation
 
-## Set up the lab
+## Set up the ATD lab
 
 ### Start an ATD instance
 
@@ -167,31 +166,6 @@ Run this command on devbox to check to generate from CVP an inventory file with 
 ```bash
 create-devices-inventory-from-cvp.py -cvp 192.168.0.5 -u arista -o inventory -c Spine
 more inventory/Spine.txt
-```
-
-## Test devices reachability using EAPI
-
-Start a python interactive session on devbox:
-
-```bash
-arista@devbox:~$ python
-```
-
-Run these python commands:
-
-```python
-from jsonrpclib import Server
-import ssl
-ssl._create_default_https_context = ssl._create_unverified_context
-USERNAME = "arista"
-# use the device password of your ATD instance
-PASSWORD = "aristad4dc"
-IP = "192.168.1.10"
-URL=f'https://{USERNAME}:{PASSWORD}@{IP}/command-api'
-switch = Server(URL)
-result=switch.runCmds(1,['show version'], 'text')
-print(result[0]['output'])
-exit()
 ```
 
 ## Test devices reachability
