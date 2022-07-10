@@ -6,6 +6,7 @@
     - [Load the EVPN lab on ATD](#load-the-evpn-lab-on-atd)
     - [Check the state of spine1](#check-the-state-of-spine1)
     - [Install the packages on devbox](#install-the-packages-on-devbox)
+    - [Clone the repository on devbox](#clone-the-repository-on-devbox)
     - [Check the requirements on the switches](#check-the-requirements-on-the-switches)
   - [Create the inventory files](#create-the-inventory-files)
   - [Test devices reachability using EAPI](#test-devices-reachability-using-eapi)
@@ -78,44 +79,56 @@ spine1#sh lldp neighbors
 Some BGP sessions are not established.
 This is expected because Leaf3 is not yet configured.
 
+
 ### Install the packages on devbox
 
 Use the devbox shell
 ![images/atd_devbox_shell.png](images/atd_devbox_shell.png)
 
-Run these commands to clone the repository and to move to the new folder:
+Run this command:
 
 ```shell
-git clone https://github.com/arista-netdevops-community/network-test-automation.git
-cd network-test-automation
+pip install git+https://github.com/arista-netdevops-community/network-test-automation.git
 ```
 
-Run this command to build the package [ANTA](../anta):
-
-```shell
-python setup.py build
-```
-
-Run this command to install:
-
-- The package [ANTA](../anta) and its dependencies
-- The packages required by these [scripts](../scripts)
-- These [scripts](../scripts) in `/usr/local/bin/`
-
-```shell
-sudo python setup.py install
-```
-
-Run this command to verify:
+Run this command to verify the packages and its dependencies are installed:
 
 ```bash
 pip list
+```
+
+The scripts are installed here:
+
+```bash
+ls -l /home/arista/.local/bin/
+```
+
+Run this command to add this path to the PATH
+
+```bash
+echo $HOME
+echo $PATH
+export PATH="$HOME/.local/bin:$PATH"
+echo $PATH
+```
+
+Run this command to verify you can run the scripts:
+
+```bash
+check-devices.py --help
 ```
 
 Run this commands on devbox to install some additional packages:
 
 ```bash
 sudo apt-get install tree unzip -y
+```
+
+### Clone the repository on devbox
+
+```shell
+git clone https://github.com/ksator/anta-demo.git
+cd anta-demo
 ```
 
 ### Check the requirements on the switches
@@ -129,7 +142,7 @@ spine1#show management api http-commands
 Run this command on devbox to check the inventory files:
 
 ```bash
-ls examples/demo/atd/inventory
+ls inventory
 ```
 
 There is already an inventory file for the leaves and another one for all devices.
@@ -137,8 +150,8 @@ But there is no inventory file for the spines.
 Run this command on devbox to check to generate from CVP an inventory file with the IP address of all the devices under the container `Spine`.
 
 ```bash
-create-devices-inventory-from-cvp.py -cvp 192.168.0.5 -u arista -o examples/demo/atd/inventory -c Spine
-more examples/demo/atd/inventory/Spine.txt
+create-devices-inventory-from-cvp.py -cvp 192.168.0.5 -u arista -o inventory -c Spine
+more inventory/Spine.txt
 ```
 
 ## Test devices reachability using EAPI
@@ -157,7 +170,7 @@ import ssl
 ssl._create_default_https_context = ssl._create_unverified_context
 USERNAME = "arista"
 # use the device password of your ATD instance
-PASSWORD = "aristatwfn"
+PASSWORD = "aristad4dc"
 IP = "192.168.1.10"
 URL=f'https://{USERNAME}:{PASSWORD}@{IP}/command-api'
 switch = Server(URL)
@@ -171,8 +184,7 @@ exit()
 Run these commands on devbox:
 
 ```bash
-check-devices-reachability.py --help
-check-devices-reachability.py -i examples/demo/atd/inventory/all.txt -u arista
+check-devices-reachability.py -i inventory/all.txt -u arista
 ```
 
 ## Test devices
@@ -186,37 +198,31 @@ Some tests can be used for all devices, some tests should be used only for the s
 Here's the inventory files:
 
 ```bash
-ls examples/demo/atd/inventory
+ls inventory
 ```
 
 Here's the tests:
 
 ```bash
-ls examples/demo/atd/tests
+ls tests
 ```
 
 ### Run the tests
 
-Run these commands on devbox:
-
-```bash
-check-devices.py --help
-```
-
 Run these commands to test the devices:
 
 ```bash
-check-devices.py -i examples/demo/atd/inventory/all.txt -t examples/demo/atd/tests/all.yaml -o examples/demo/atd/tests_result_all.txt -u arista
-check-devices.py -i examples/demo/atd/inventory/Spine.txt -t examples/demo/atd/tests/Spine.yaml -o examples/demo/atd/tests_result_Spine.txt -u arista
-check-devices.py -i examples/demo/atd/inventory/Leaf.txt -t examples/demo/atd/tests/leaf.yaml -o examples/demo/atd/tests_result_Leaf.txt -u arista
+check-devices.py -i inventory/all.txt -t tests/all.yaml -o tests_result_all.txt -u arista
+check-devices.py -i inventory/Spine.txt -t tests/Spine.yaml -o tests_result_Spine.txt -u arista
+check-devices.py -i inventory/Leaf.txt -t tests/Leaf.yaml -o tests_result_Leaf.txt -u arista
 ```
 
 Run these commands to check the result:
 
 ```bash
-cat examples/demo/atd/tests_result_all.txt
-cat examples/demo/atd/tests_result_Spine.txt
-cat examples/demo/atd/tests_result_Leaf.txt
+cat tests_result_all.txt
+cat tests_result_Spine.txt
+cat tests_result_Leaf.txt
 ```
 
 Some tests failed.
@@ -227,7 +233,7 @@ This is expected because leaf3 is not yet configured.
 Lets configure leaf3 using EAPI.
 
 ```bash
-python examples/demo/atd/configure-leaf3.py
+python configure-leaf3.py
 ```
 
 ### Re run the tests
@@ -235,17 +241,17 @@ python examples/demo/atd/configure-leaf3.py
 Lets re run all the tests.
 
 ```bash
-check-devices.py -i examples/demo/atd/inventory/all.txt -t examples/demo/atd/tests/all.yaml -o examples/demo/atd/tests_result_all.txt -u arista
-check-devices.py -i examples/demo/atd/inventory/Spine.txt -t examples/demo/atd/tests/Spine.yaml -o examples/demo/atd/tests_result_Spine.txt -u arista
-check-devices.py -i examples/demo/atd/inventory/Leaf.txt -t examples/demo/atd/tests/leaf.yaml -o examples/demo/atd/tests_result_Leaf.txt -u arista
+check-devices.py -i inventory/all.txt -t tests/all.yaml -o tests_result_all.txt -u arista
+check-devices.py -i inventory/Spine.txt -t tests/Spine.yaml -o tests_result_Spine.txt -u arista
+check-devices.py -i inventory/Leaf.txt -t tests/Leaf.yaml -o tests_result_Leaf.txt -u arista
 ```
 
 Run these commands to check the result:
 
 ```bash
-cat examples/demo/atd/tests_result_all.txt
-cat examples/demo/atd/tests_result_Spine.txt
-cat examples/demo/atd/tests_result_Leaf.txt
+cat tests_result_all.txt
+cat tests_result_Spine.txt
+cat tests_result_Leaf.txt
 ```
 
 ## Collect commands output
@@ -253,11 +259,10 @@ cat examples/demo/atd/tests_result_Leaf.txt
 Run these commands on devbox:
 
 ```bash
-collect-eos-commands.py --help
-more examples/demo/atd/eos-commands.yaml
-collect-eos-commands.py -i examples/demo/atd/inventory/all.txt -c examples/demo/atd/eos-commands.yaml -o examples/demo/atd/show_commands -u arista
-tree examples/demo/atd/show_commands
-more examples/demo/atd/show_commands/192.168.0.10/text/show\ version
+more eos-commands.yaml
+collect-eos-commands.py -i inventory/all.txt -c eos-commands.yaml -o show_commands -u arista
+tree show_commands
+more show_commands/192.168.0.10/text/show\ version
 ```
 
 ## Collect the scheduled show tech-support files
@@ -270,12 +275,11 @@ spine1# bash ls /mnt/flash/schedule/tech-support/
 Run these commands on devbox:
 
 ```bash
-collect-sheduled-show-tech.py --help
-collect-sheduled-show-tech.py -i examples/demo/atd/inventory/all.txt -u arista -o examples/demo/atd/show_tech
-tree examples/demo/atd/show_tech
-unzip examples/demo/atd/show_tech/spine1/xxxx.zip -d examples/demo/atd/show_tech
-ls examples/demo/atd/show_tech/mnt/flash/schedule/tech-support/
-ls examples/demo/atd/show_tech/mnt/flash/schedule/tech-support/ | wc -l
+collect-sheduled-show-tech.py -i inventory/all.txt -u arista -o show_tech
+tree show_tech
+unzip show_tech/spine1/xxxx.zip -d show_tech
+ls show_tech/mnt/flash/schedule/tech-support/
+ls show_tech/mnt/flash/schedule/tech-support/ | wc -l
 ```
 
 ```bash
@@ -305,8 +309,7 @@ leaf3#show logging | grep EVPN-3-BLACKLISTED_DUPLICATE_MAC
 Run this command on devbox to clear on devices the list of MAC addresses which are blacklisted in EVPN:
 
 ```bash
-evpn-blacklist-recovery.py --help
-evpn-blacklist-recovery.py -i examples/demo/atd/inventory/all.txt -u arista
+evpn-blacklist-recovery.py -i inventory/all.txt -u arista
 ```
 
 Verify:
@@ -326,8 +329,7 @@ spine1#sh interfaces counters
 Run these commands on devbox:
 
 ```bash
-clear-counters.py --help
-clear-counters.py -i examples/demo/atd/inventory/all.txt -u arista
+clear-counters.py -i inventory/all.txt -u arista
 ```
 
 ```bash
