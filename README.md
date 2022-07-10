@@ -109,6 +109,15 @@ Run this command to verify the packages and its dependencies are installed:
 pip list
 ```
 
+Run these commands in a Python interactive session:
+
+```python
+>>> from anta.tests import *
+>>> dir()        
+>>> help(verify_bgp_evpn_state)
+>>> exit()
+```
+
 The scripts are installed here:
 
 ```bash
