@@ -1,13 +1,14 @@
 **Table of contents**
 
-- [Demo using an ATD (Arista Test Drive) lab](#demo-using-an-atd-arista-test-drive-lab)
+- [ANTA demo using an ATD (Arista Test Drive) lab](#anta-demo-using-an-atd-arista-test-drive-lab)
+  - [About ANTA](#about-anta)
   - [Set up the lab](#set-up-the-lab)
     - [Start an ATD instance](#start-an-atd-instance)
     - [Load the EVPN lab on ATD](#load-the-evpn-lab-on-atd)
     - [Check the state of spine1](#check-the-state-of-spine1)
-    - [Install the packages on devbox](#install-the-packages-on-devbox)
-    - [Clone the repository on devbox](#clone-the-repository-on-devbox)
     - [Check the requirements on the switches](#check-the-requirements-on-the-switches)
+  - [Install the packages on devbox](#install-the-packages-on-devbox)
+  - [Clone this repository on devbox](#clone-this-repository-on-devbox)
   - [Create the inventory files](#create-the-inventory-files)
   - [Test devices reachability using EAPI](#test-devices-reachability-using-eapi)
   - [Test devices reachability](#test-devices-reachability)
@@ -23,9 +24,15 @@
     - [Clear the blacklisted MAC addresses](#clear-the-blacklisted-mac-addresses)
   - [Clear counters](#clear-counters)
 
-# Demo using an ATD (Arista Test Drive) lab
+# ANTA demo using an ATD (Arista Test Drive) lab
 
-Here's the instructions to use this repository with an ATD (Arista Test Drive) lab.
+Here's the instructions to use ANTA with an ATD (Arista Test Drive) lab.
+
+## About ANTA
+
+ANTA stands for **Arista Network Test Automation**. 
+ANTA is a Python package to automate tests on Arista devices. 
+The ANTA source code and documentation are in this repository https://github.com/arista-netdevops-community/network-test-automation
 
 ## Set up the lab
 
@@ -79,8 +86,13 @@ spine1#sh lldp neighbors
 Some BGP sessions are not established.
 This is expected because Leaf3 is not yet configured.
 
+### Check the requirements on the switches
 
-### Install the packages on devbox
+```text
+spine1#show management api http-commands
+```
+
+## Install the packages on devbox
 
 Use the devbox shell
 ![images/atd_devbox_shell.png](images/atd_devbox_shell.png)
@@ -124,17 +136,11 @@ Run this commands on devbox to install some additional packages:
 sudo apt-get install tree unzip -y
 ```
 
-### Clone the repository on devbox
+## Clone this repository on devbox
 
 ```shell
 git clone https://github.com/ksator/anta-demo.git
 cd anta-demo
-```
-
-### Check the requirements on the switches
-
-```text
-spine1#show management api http-commands
 ```
 
 ## Create the inventory files
