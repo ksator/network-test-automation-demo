@@ -1,6 +1,6 @@
 **Table of contents**
 
-- [ANTA demo using an ATD (Arista Test Drive) lab](#anta-demo-using-an-atd-arista-test-drive-lab)
+- [ANTA demo using an ATD lab](#anta-demo-using-an-atd-lab)
   - [About ANTA](#about-anta)
   - [Set up the ATD lab](#set-up-the-atd-lab)
     - [Start an ATD instance](#start-an-atd-instance)
@@ -23,14 +23,17 @@
     - [Clear the blacklisted MAC addresses](#clear-the-blacklisted-mac-addresses)
   - [Clear counters](#clear-counters)
 
-# ANTA demo using an ATD (Arista Test Drive) lab
+# ANTA demo using an ATD lab
 
-Here's the instructions to use ANTA with an ATD (Arista Test Drive) lab.
+- ANTA stands for **Arista Network Test Automation**
+- ATD stands for **Arista Test Drive**  
+
+Here's the instructions to use ANTA with an ATD lab
 
 ## About ANTA
 
-ANTA stands for **Arista Network Test Automation**. 
-ANTA is a Python package to automate tests on Arista devices. 
+
+ANTA is a Python package to automate tests on Arista devices.  
 The ANTA source code and documentation are in this repository https://github.com/arista-netdevops-community/network-test-automation
 
 ## Set up the ATD lab
