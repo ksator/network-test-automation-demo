@@ -223,7 +223,7 @@ This is expected because leaf3 is not yet configured.
 
 ### Fix the issue
 
-Lets configure leaf3 using EAPI.
+Lets configure leaf3 using eAPI.
 
 ```bash
 python configure-leaf3.py
