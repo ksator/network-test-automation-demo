@@ -123,7 +123,7 @@ The scripts are installed here:
 ls -l /home/arista/.local/bin/
 ```
 
-Run this command to add this path to the PATH
+Run this command to add this path to the PATH env variable
 
 ```bash
 echo $HOME
@@ -132,7 +132,7 @@ export PATH="$HOME/.local/bin:$PATH"
 echo $PATH
 ```
 
-Run this command to verify you can run the scripts:
+Run this command to verify you can now run the scripts:
 
 ```bash
 check-devices.py --help
@@ -170,7 +170,7 @@ more inventory/Spine.txt
 
 ## Test devices reachability
 
-Run these commands on devbox:
+Run this command on devbox:
 
 ```bash
 check-devices-reachability.py -i inventory/all.txt -u arista
@@ -180,9 +180,13 @@ check-devices-reachability.py -i inventory/all.txt -u arista
 
 ### Define the tests
 
-ATD uses cEOS or vEOS so we will skip the hardware tests.
+ATD uses cEOS or vEOS so we wont run the hardware tests.  
 This lab doesnt use MLAG, OSPF, IPv6, RTC ... so we wont run these tests as well.
-Some tests can be used for all devices, some tests should be used only for the spines, and some tests should be used only for the leaves.
+
+Some tests can be used for all devices like the checking the EOS version or checking of the NTP status.  
+
+About the Spines versus the leaves, they usually have a different number of BGP sessions and a different number of loopback interfaces.
+So, some tests should be used only for the spines, and some tests should be used only for the leaves.  
 
 Here's the inventory files:
 
@@ -243,6 +247,8 @@ cat tests_result_Spine.txt
 cat tests_result_Leaf.txt
 ```
 
+All tests passed.
+
 ## Collect commands output
 
 Run these commands on devbox:
@@ -271,7 +277,7 @@ ls show_tech/mnt/flash/schedule/tech-support/
 ls show_tech/mnt/flash/schedule/tech-support/ | wc -l
 ```
 
-```bash
+```text
 spine1# bash ls /mnt/flash/schedule/tech-support/
 ```
 

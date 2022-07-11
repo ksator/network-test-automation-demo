@@ -5,7 +5,6 @@ This scripts configure the leaf3 device
 import ssl
 from jsonrpclib import Server
 
-# pylint: disable=protected-access
 ssl._create_default_https_context = ssl._create_unverified_context
 USERNAME = "arista"
 # use the password of your ATD instance
