@@ -14,7 +14,6 @@ args = parser.parse_args()
 args.password = getpass(prompt='Device password: ')
 
 USERNAME = "arista"
-# use the password of your ATD instance
 PASSWORD = args.password
 IP = "192.168.0.14"
 
