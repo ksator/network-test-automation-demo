@@ -32,7 +32,7 @@ Here's the instructions to use ANTA with an ATD lab
 
 ANTA stands for **Arista Network Test Automation**  
 ANTA is a Python package to automate tests on Arista devices.  
-The ANTA source code and documentation are in this repository https://github.com/ksator/network-test-automation
+The ANTA source code and documentation are in this [repository](https://github.com/ksator/network-test-automation)
 
 ## Set up the ATD lab
 
