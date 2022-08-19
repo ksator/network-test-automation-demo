@@ -3,6 +3,7 @@
 - [ANTA demo using an ATD lab](#anta-demo-using-an-atd-lab)
   - [About ANTA](#about-anta)
   - [Set up the ATD lab](#set-up-the-atd-lab)
+    - [About ATD](#about-atd)
     - [Start an ATD instance](#start-an-atd-instance)
     - [Load the EVPN lab on ATD](#load-the-evpn-lab-on-atd)
     - [Check the state of spine1](#check-the-state-of-spine1)
@@ -25,18 +26,19 @@
 
 # ANTA demo using an ATD lab
 
-- ANTA stands for **Arista Network Test Automation**
-- ATD stands for **Arista Test Drive**  
-
 Here's the instructions to use ANTA with an ATD lab
 
 ## About ANTA
 
-
+ANTA stands for **Arista Network Test Automation**  
 ANTA is a Python package to automate tests on Arista devices.  
-The ANTA source code and documentation are in this repository https://github.com/arista-netdevops-community/network-test-automation
+The ANTA source code and documentation are in this repository https://github.com/ksator/network-test-automation
 
 ## Set up the ATD lab
+
+### About ATD
+
+ATD stands for **Arista Test Drive**  
 
 ### Start an ATD instance
 
@@ -102,7 +104,7 @@ Use the devbox shell
 Run this command:
 
 ```shell
-pip install git+https://github.com/arista-netdevops-community/network-test-automation.git
+pip install git+https://github.com/ksator/network-test-automation.git
 ```
 
 Run this command to verify the packages and its dependencies are installed:
